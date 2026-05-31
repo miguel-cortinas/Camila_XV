@@ -139,35 +139,19 @@
       font-size: 16px;
       -webkit-text-size-adjust: 100%;
       text-size-adjust: 100%;
-      overscroll-behavior: none;
-      /*
-        SOLUCIÓN DEFINITIVA AL TIRÓN:
-        html y body se fijan al viewport INICIAL (100lvh / --vh).
-        El body se convierte en el contenedor de scroll con
-        overflow-y:scroll. Así, cuando el browser chrome
-        aparece/desaparece, las dimensiones de html/body
-        NO cambian — solo cambia el área visual del navegador.
-        Resultado: cero layout recalculation, cero tirón.
-      */
-      height: 100lvh;
-      height: calc(var(--vh, 1vh) * 100);
-      overflow: hidden;
+      overscroll-behavior-y: none;
     }
 
     body {
       font-family: var(--ff-sans);
       color: var(--text-dark);
+      overflow-x: hidden;
       background-color: var(--ivory);
+      -webkit-overflow-scrolling: touch;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       padding-left: env(safe-area-inset-left);
       padding-right: env(safe-area-inset-right);
-      overscroll-behavior: none;
-      /* body es el contenedor de scroll — no el viewport */
-      height: 100%;
-      overflow-x: hidden;
-      overflow-y: scroll;
-      -webkit-overflow-scrolling: touch;
     }
 
     img {
@@ -567,11 +551,10 @@
     #invitation {
       display: none;
       position: relative;
-      /* min-height eliminado: body es ahora el scroll container */
+      min-height: calc(var(--vh, 1vh) * 100);
       opacity: 0;
       transform: translateY(36px);
       transition: opacity 0.8s ease 0.15s, transform 0.8s var(--ease-out) 0.15s;
-      touch-action: pan-y;
     }
 
     #invitation.visible {
@@ -579,18 +562,22 @@
       transform: translateY(0);
     }
 
-    /* Botanical background — position:absolute para que NO salte
-       cuando el browser chrome aparece/desaparece. Se desplaza con
-       el contenido de forma natural sin causar relayout del viewport. */
+    /* Botanical background — position:fixed pero usando una altura FIJA
+       calculada por JS (--vh). NO usa bottom: 0, por lo que nunca cambia
+       de tamaño cuando la barra de direcciones del navegador se oculta. */
     #botanical-bg {
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
       width: 100%;
-      height: 100%;
+      height: 100lvh;
+      height: calc(var(--vh, 1vh) * 100);
       pointer-events: none;
       z-index: 0;
       overflow: hidden;
+      will-change: transform;
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
     }
 
     /* ── Section base ── */
@@ -722,7 +709,8 @@
        S1 — HERO
     ═══════════════════════════════════════ */
     #s-hero {
-      min-height: 100dvh;
+      /* Reemplazado 100dvh por var(--vh) fijo para evitar reflow durante el scroll */
+      min-height: calc(var(--vh, 1vh) * 100);
       display: flex;
       flex-direction: column;
       align-items: center;
