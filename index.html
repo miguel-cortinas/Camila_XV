@@ -140,15 +140,13 @@
       -webkit-text-size-adjust: 100%;
       text-size-adjust: 100%;
       overscroll-behavior-y: none;
-      /* Mientras el cover está activo, bloqueamos el scroll del documento completo */
-      overflow: hidden;
-      height: 100%;
     }
 
     body {
       font-family: var(--ff-sans);
       color: var(--text-dark);
       overflow-x: hidden;
+      overflow-y: auto;
       background-color: var(--ivory);
       -webkit-overflow-scrolling: touch;
       -webkit-font-smoothing: antialiased;
@@ -156,23 +154,7 @@
       padding-left: env(safe-area-inset-left);
       padding-right: env(safe-area-inset-right);
       overscroll-behavior-x: none;
-      /* Bloquea scroll mientras cover está visible */
-      overflow: hidden;
-      height: 100%;
-      /* Altura real del viewport al cargar — no cambia con las barras */
-      min-height: calc(var(--vh, 1vh) * 100);
-    }
-
-    /* Cuando el cover se va, liberamos el scroll */
-    body.cover-gone {
-      overflow-x: hidden;
-      overflow-y: auto;
-      height: auto;
-    }
-
-    html.cover-gone {
-      overflow: auto;
-      height: auto;
+      min-height: 100%;
     }
 
     img {
@@ -199,13 +181,30 @@
     /* ═══════════════════════════════════════
        COVER — envelope intro
     ═══════════════════════════════════════ */
-    #cover {
+
+    /*
+      SOLUCIÓN AL TIRÓN EN MÓVIL:
+      El shell es position:fixed y absorbe cualquier
+      cambio de viewport. El #cover es position:absolute
+      dentro del shell — nunca se recalcula su posición
+      cuando las barras del navegador aparecen/desaparecen.
+    */
+    #cover-shell {
       position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 200;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    #cover {
+      position: absolute;
       inset: 0;
-      /* Con html/body overflow:hidden, el viewport no se mueve — no necesitamos --vh aquí */
       padding-top: env(safe-area-inset-top);
       padding-bottom: env(safe-area-inset-bottom);
-      z-index: 200;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -214,6 +213,7 @@
       cursor: pointer;
       user-select: none;
       touch-action: manipulation;
+      pointer-events: auto;
       transition: opacity 0.75s ease, transform 0.75s var(--ease-out);
       will-change: opacity, transform;
     }
@@ -516,7 +516,7 @@
 
     /* Shimmer sweep on transition */
     #shimmer {
-      position: fixed;
+      position: absolute;
       inset: 0;
       z-index: 190;
       background: linear-gradient(100deg, transparent 0%, rgba(253, 240, 210, 0.55) 50%, transparent 100%);
@@ -530,7 +530,7 @@
 
     /* Confetti */
     #confetti-canvas {
-      position: fixed;
+      position: absolute;
       inset: 0;
       pointer-events: none;
       opacity: 0;
@@ -1445,37 +1445,40 @@
   <!-- ══════════════════════════════════════
        COVER (envelope intro)
   ══════════════════════════════════════ -->
-  <div id="cover" class="marble" role="button" aria-label="Toca para abrir la invitación" tabindex="0"
-    onclick="handleCoverTap()" onkeydown="if(event.key==='Enter'||event.key===' ')handleCoverTap()">
+  <div id="cover-shell" class="marble">
+    <div id="cover" class="marble" role="button" aria-label="Toca para abrir la invitación" tabindex="0"
+      onclick="handleCoverTap()" onkeydown="if(event.key==='Enter'||event.key===' ')handleCoverTap()">
 
-    <div id="monogram" aria-hidden="true" style="margin-bottom:-10px">
-      <span class="letra" style="font-size:clamp(42px,11vw,72px);font-style:italic">Camila</span>
-      <span class="sub">XV Años</span>
-    </div>
-
-    <div id="envelope-wrapper" aria-hidden="true">
-      <img id="cuerpo" src="img/1.png" alt="Sobre">
-      <div id="carta-wrap">
-        <img id="carta" src="img/5.png" alt="Carta">
+      <div id="monogram" aria-hidden="true" style="margin-bottom:-10px">
+        <span class="letra" style="font-size:clamp(42px,11vw,72px);font-style:italic">Camila</span>
+        <span class="sub">XV Años</span>
       </div>
-      <div id="solapa-wrap">
-        <img id="solapa" src="img/3.png" alt="Solapa del sobre">
+
+      <div id="envelope-wrapper" aria-hidden="true">
+        <img id="cuerpo" src="img/1.png" alt="Sobre">
+        <div id="carta-wrap">
+          <img id="carta" src="img/5.png" alt="Carta">
+        </div>
+        <div id="solapa-wrap">
+          <img id="solapa" src="img/3.png" alt="Solapa del sobre">
+        </div>
+        <img id="sello" src="img/4.png" alt="Sello de cera">
       </div>
-      <img id="sello" src="img/4.png" alt="Sello de cera">
-    </div>
 
-    <div id="hint-wrap" aria-hidden="true">
-      <span id="hint">Toca para abrir</span>
-      <div class="pulse-halo"><span class="halo-core"></span></div>
-    </div>
+      <div id="hint-wrap" aria-hidden="true">
+        <span id="hint">Toca para abrir</span>
+        <div class="pulse-halo"><span class="halo-core"></span></div>
+      </div>
 
-  </div>
+    </div><!-- /#cover -->
 
-  <!-- Gold shimmer overlay -->
-  <div id="shimmer" aria-hidden="true"></div>
+    <!-- Gold shimmer overlay -->
+    <div id="shimmer" aria-hidden="true"></div>
 
-  <!-- Confetti -->
-  <canvas id="confetti-canvas" aria-hidden="true"></canvas>
+    <!-- Confetti -->
+    <canvas id="confetti-canvas" aria-hidden="true"></canvas>
+
+  </div><!-- /#cover-shell -->
 
   <!-- ══════════════════════════════════════
        INVITATION
@@ -2075,10 +2078,6 @@
         shimmer.classList.add('sweep');
         cover.classList.add('leaving');
 
-        // Liberar scroll ahora que el cover desaparece
-        document.documentElement.classList.add('cover-gone');
-        document.body.classList.add('cover-gone');
-
         invitation.style.display = 'block';
         setTimeout(() => {
           window.scrollTo({ top: 0, behavior: 'instant' });
@@ -2088,7 +2087,10 @@
           buildEnvelopeRain();
         }, 100);
 
-        setTimeout(() => { cover.style.display = 'none'; }, 900);
+        setTimeout(() => {
+          cover.style.display = 'none';
+          document.getElementById('cover-shell').style.display = 'none';
+        }, 900);
       }, 3600);
     }
 
