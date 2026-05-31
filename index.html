@@ -139,7 +139,9 @@
       font-size: 16px;
       -webkit-text-size-adjust: 100%;
       text-size-adjust: 100%;
-      overscroll-behavior-y: none;
+      /* Bloquea el rebote/pull de scroll en iOS que tambien causa saltos */
+      overscroll-behavior: none;
+      height: 100%;
     }
 
     body {
@@ -153,8 +155,8 @@
       -moz-osx-font-smoothing: grayscale;
       padding-left: env(safe-area-inset-left);
       padding-right: env(safe-area-inset-right);
-      overscroll-behavior-x: none;
-      min-height: 100%;
+      overscroll-behavior: none;
+      /* Sin min-height en body: el cover-shell usa 100lvh directamente */
     }
 
     img {
@@ -194,10 +196,19 @@
       top: 0;
       left: 0;
       width: 100%;
-      height: 100%;
+      /*
+        100lvh = altura MAXIMA del viewport (sin chrome del navegador).
+        Nunca se reduce cuando aparece la barra: no hay tirón.
+        Fallback: --vh se captura UNA SOLA VEZ al cargar la página.
+      */
+      height: 100lvh;
+      height: calc(var(--vh, 1vh) * 100); /* fallback para browsers sin lvh */
       z-index: 200;
       overflow: hidden;
       pointer-events: none;
+      /* Evitar que el compositing layer cause parpadeo en iOS */
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
     }
 
     #cover {
@@ -558,15 +569,18 @@
       transform: translateY(0);
     }
 
-    /* Fixed botanical background layer */
+    /* Botanical background — position:absolute para que NO salte
+       cuando el browser chrome aparece/desaparece. Se desplaza con
+       el contenido de forma natural sin causar relayout del viewport. */
     #botanical-bg {
-      position: fixed;
-      inset: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       pointer-events: none;
       z-index: 0;
       overflow: hidden;
-      will-change: transform;
-      transform: translateZ(0);
     }
 
     /* ── Section base ── */
@@ -2005,22 +2019,27 @@
 
   <script>
     /* ═════════════════════════════════════════
-       --vh VIEWPORT FIX (iOS / Android)
-       Se captura UNA SOLA VEZ al cargar.
-       NO se actualiza en resize: eso es lo que
-       causa el salto cuando el navegador muestra
-       o esconde sus barras al hacer scroll.
-       Solo se recalcula si el usuario rota el
-       dispositivo (orientationchange).
+       --vh VIEWPORT FIX — captura UNA SOLA VEZ.
+       El cover-shell usa 100lvh como valor primario
+       (browsers modernos). El calc(--vh*100) es solo
+       fallback para Safari < 15.4 / Chrome < 108.
+       NO hay listener de resize: evita cualquier
+       recalculo cuando la barra del navegador
+       aparece/desaparece al hacer scroll.
     ═════════════════════════════════════════ */
     (function setVh() {
-      const update = () => {
-        document.documentElement.style.setProperty('--vh', (window.innerHeight * 0.01) + 'px');
-      };
-      update();
-      // Solo en cambio de orientación (retrato ↔ paisaje), no en scroll
-      window.addEventListener('orientationchange', () => {
-        setTimeout(update, 300);
+      // Captura el innerHeight ANTES de cualquier scroll,
+      // cuando el browser chrome aun no ha desaparecido.
+      document.documentElement.style.setProperty(
+        '--vh', (window.innerHeight * 0.01) + 'px'
+      );
+      // Solo en rotacion de pantalla (no en scroll)
+      window.addEventListener('orientationchange', function () {
+        setTimeout(function () {
+          document.documentElement.style.setProperty(
+            '--vh', (window.innerHeight * 0.01) + 'px'
+          );
+        }, 400);
       }, { passive: true });
     })();
 
