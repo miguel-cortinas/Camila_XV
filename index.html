@@ -927,11 +927,36 @@
       text-align: center;
     }
 
+    .map-wrapper {
+      position: relative;
+      display: block;
+      margin-bottom: 20px;
+    }
+
+    .map-wrapper::after {
+      content: '';
+      position: absolute;
+      inset: -15px;
+      border: 1px solid rgba(201, 168, 76, 0.13);
+      z-index: 0;
+      pointer-events: none;
+    }
+
     .map-frame {
       border: 1px solid var(--gold-border);
       overflow: hidden;
-      margin-bottom: 20px;
       position: relative;
+      z-index: 1;
+    }
+
+    /* Inner frame line overlaying the map */
+    .map-frame::after {
+      content: '';
+      position: absolute;
+      inset: 6px;
+      border: 1px solid rgba(201, 168, 76, 0.45);
+      pointer-events: none; /* Let map be clickable */
+      z-index: 2;
     }
 
     .map-frame iframe {
@@ -1761,11 +1786,18 @@
       <span class="s-label">Como llegar</span>
       <h2 class="s-title">Ubicación</h2>
 
-      <div class="map-frame reveal-child">
-        <iframe src="https://maps.google.com/maps?q=Quinta+San+Gabriel+Chihuahua+Mexico&output=embed&z=15"
-          loading="lazy" title="Ubicación de Quinta San Gabriel, Chihuahua" allowfullscreen
-          referrerpolicy="no-referrer-when-downgrade">
-        </iframe>
+      <div class="map-wrapper reveal-child">
+        <div class="map-frame">
+          <iframe src="https://maps.google.com/maps?q=Quinta+San+Gabriel+Chihuahua+Mexico&output=embed&z=15"
+            loading="lazy" title="Ubicación de Quinta San Gabriel, Chihuahua" allowfullscreen
+            referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+        </div>
+        <!-- Corner pieces -->
+        <svg class="corner-piece tl" viewBox="0 0 28 28" fill="none"><path d="M26 2 L7 2 Q2 2 2 7 L2 26" stroke="#c9a84c" stroke-width="1.3" /><circle cx="6.5" cy="6.5" r="1.8" fill="#c9a84c" /></svg>
+        <svg class="corner-piece tr" viewBox="0 0 28 28" fill="none"><path d="M26 2 L7 2 Q2 2 2 7 L2 26" stroke="#c9a84c" stroke-width="1.3" /><circle cx="6.5" cy="6.5" r="1.8" fill="#c9a84c" /></svg>
+        <svg class="corner-piece bl" viewBox="0 0 28 28" fill="none"><path d="M26 2 L7 2 Q2 2 2 7 L2 26" stroke="#c9a84c" stroke-width="1.3" /><circle cx="6.5" cy="6.5" r="1.8" fill="#c9a84c" /></svg>
+        <svg class="corner-piece br" viewBox="0 0 28 28" fill="none"><path d="M26 2 L7 2 Q2 2 2 7 L2 26" stroke="#c9a84c" stroke-width="1.3" /><circle cx="6.5" cy="6.5" r="1.8" fill="#c9a84c" /></svg>
       </div>
 
       <div style="text-align:center" class="reveal-child" style="transition-delay:80ms">
