@@ -137,30 +137,42 @@
     html {
       scroll-behavior: smooth;
       font-size: 16px;
-      /* Evitar redimensionado de fuentes en rotación (iOS/Android) */
       -webkit-text-size-adjust: 100%;
       text-size-adjust: 100%;
-      /* Evitar que el pull-to-refresh de Android interfiera */
       overscroll-behavior-y: none;
+      /* Mientras el cover está activo, bloqueamos el scroll del documento completo */
+      overflow: hidden;
+      height: 100%;
     }
 
     body {
       font-family: var(--ff-sans);
       color: var(--text-dark);
       overflow-x: hidden;
-      /* Usa --vh calculado por JS para evitar saltos al aparecer/ocultar barras del navegador */
-      min-height: calc(var(--vh, 1vh) * 100);
       background-color: var(--ivory);
-      /* Scroll momentum en iOS */
       -webkit-overflow-scrolling: touch;
-      /* Suavizado de fuentes */
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      /* Padding para el notch/home indicator de iOS y Android */
       padding-left: env(safe-area-inset-left);
       padding-right: env(safe-area-inset-right);
-      /* Evitar rebote horizontal */
       overscroll-behavior-x: none;
+      /* Bloquea scroll mientras cover está visible */
+      overflow: hidden;
+      height: 100%;
+      /* Altura real del viewport al cargar — no cambia con las barras */
+      min-height: calc(var(--vh, 1vh) * 100);
+    }
+
+    /* Cuando el cover se va, liberamos el scroll */
+    body.cover-gone {
+      overflow-x: hidden;
+      overflow-y: auto;
+      height: auto;
+    }
+
+    html.cover-gone {
+      overflow: auto;
+      height: auto;
     }
 
     img {
@@ -190,9 +202,7 @@
     #cover {
       position: fixed;
       inset: 0;
-      /* Altura fija al tamaño inicial — no cambia cuando aparecen/desaparecen barras */
-      height: calc(var(--vh, 1vh) * 100);
-      /* Safe area para notch/home indicator */
+      /* Con html/body overflow:hidden, el viewport no se mueve — no necesitamos --vh aquí */
       padding-top: env(safe-area-inset-top);
       padding-bottom: env(safe-area-inset-bottom);
       z-index: 200;
@@ -2064,6 +2074,10 @@
 
         shimmer.classList.add('sweep');
         cover.classList.add('leaving');
+
+        // Liberar scroll ahora que el cover desaparece
+        document.documentElement.classList.add('cover-gone');
+        document.body.classList.add('cover-gone');
 
         invitation.style.display = 'block';
         setTimeout(() => {
