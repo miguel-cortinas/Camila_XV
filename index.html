@@ -139,24 +139,35 @@
       font-size: 16px;
       -webkit-text-size-adjust: 100%;
       text-size-adjust: 100%;
-      /* Bloquea el rebote/pull de scroll en iOS que tambien causa saltos */
       overscroll-behavior: none;
-      height: 100%;
+      /*
+        SOLUCIÓN DEFINITIVA AL TIRÓN:
+        html y body se fijan al viewport INICIAL (100lvh / --vh).
+        El body se convierte en el contenedor de scroll con
+        overflow-y:scroll. Así, cuando el browser chrome
+        aparece/desaparece, las dimensiones de html/body
+        NO cambian — solo cambia el área visual del navegador.
+        Resultado: cero layout recalculation, cero tirón.
+      */
+      height: 100lvh;
+      height: calc(var(--vh, 1vh) * 100);
+      overflow: hidden;
     }
 
     body {
       font-family: var(--ff-sans);
       color: var(--text-dark);
-      overflow-x: hidden;
-      overflow-y: auto;
       background-color: var(--ivory);
-      -webkit-overflow-scrolling: touch;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       padding-left: env(safe-area-inset-left);
       padding-right: env(safe-area-inset-right);
       overscroll-behavior: none;
-      /* Sin min-height en body: el cover-shell usa 100lvh directamente */
+      /* body es el contenedor de scroll — no el viewport */
+      height: 100%;
+      overflow-x: hidden;
+      overflow-y: scroll;
+      -webkit-overflow-scrolling: touch;
     }
 
     img {
@@ -556,11 +567,10 @@
     #invitation {
       display: none;
       position: relative;
-      min-height: calc(var(--vh, 1vh) * 100);
+      /* min-height eliminado: body es ahora el scroll container */
       opacity: 0;
       transform: translateY(36px);
       transition: opacity 0.8s ease 0.15s, transform 0.8s var(--ease-out) 0.15s;
-      /* Scroll vertical libre en móvil, sin interferencia de gestos horizontales */
       touch-action: pan-y;
     }
 
