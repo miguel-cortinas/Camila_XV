@@ -1,0 +1,2104 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Invitación digital — XV Años de Camila Barba · 20 de Junio, 2026">
+  <title>Camila · XV Años</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Montserrat:wght@300;400;500&display=swap"
+    rel="stylesheet">
+
+  <style>
+    /* ═══════════════════════════════════════
+       TOKENS
+    ═══════════════════════════════════════ */
+    :root {
+      --ivory: #fdf8f2;
+      --ivory-warm: #f8f0e4;
+      --blush-pale: #fbe8ee;
+      --blush: #f0c4ce;
+      --blush-mid: #e0a0b4;
+      --gold: #c9a84c;
+      --gold-light: #dfc070;
+      --gold-pale: rgba(201, 168, 76, 0.10);
+      --gold-border: rgba(201, 168, 76, 0.32);
+      --text-dark: #3d2b1f;
+      --text-mid: #7a5c4a;
+      --text-light: #a08870;
+      --text-gold: #a07830;
+      --ff-serif: 'Cormorant Garamond', Georgia, serif;
+      --ff-sans: 'Montserrat', sans-serif;
+      --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+      --ease-spring: cubic-bezier(0.34, 1.32, 0.64, 1);
+    }
+
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      font-family: var(--ff-sans);
+      color: var(--text-dark);
+      overflow-x: hidden;
+      min-height: 100dvh;
+      background-color: var(--ivory);
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    /* ═══════════════════════════════════════
+       MARBLE BACKGROUND (shared)
+    ═══════════════════════════════════════ */
+    .marble {
+      background-color: var(--ivory);
+      background-image:
+        repeating-linear-gradient(115deg, transparent, transparent 180px, rgba(240, 196, 206, 0.18) 180px, rgba(240, 196, 206, 0.18) 181px),
+        repeating-linear-gradient(55deg, transparent, transparent 220px, rgba(228, 160, 180, 0.11) 220px, rgba(228, 160, 180, 0.11) 221px),
+        repeating-linear-gradient(163deg, transparent, transparent 140px, rgba(248, 224, 232, 0.26) 140px, rgba(248, 224, 232, 0.26) 141px),
+        repeating-linear-gradient(82deg, transparent, transparent 290px, rgba(201, 168, 76, 0.055) 290px, rgba(201, 168, 76, 0.055) 292px),
+        linear-gradient(158deg, #fdf8f2 0%, #fbebf0 28%, #fdf4f7 55%, #faf0e6 80%, #fdf8f2 100%);
+    }
+
+    /* ═══════════════════════════════════════
+       COVER — envelope intro
+    ═══════════════════════════════════════ */
+    #cover {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 26px;
+      cursor: pointer;
+      user-select: none;
+      transition: opacity 0.75s ease, transform 0.75s var(--ease-out);
+      will-change: opacity, transform;
+    }
+
+    #cover.leaving {
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.96);
+    }
+
+    /* Monogram */
+    #monogram {
+      text-align: center;
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(-14px);
+      animation: fadeUp 0.9s var(--ease-out) 0.25s forwards;
+    }
+
+    #monogram .letra {
+      font-family: var(--ff-serif);
+      font-size: clamp(58px, 16vw, 104px);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--text-mid);
+      line-height: 1;
+      text-shadow: 0 2px 18px rgba(201, 168, 76, 0.22);
+    }
+
+    #monogram .sub {
+      display: block;
+      font-family: var(--ff-sans);
+      font-size: clamp(9px, 2.6vw, 11px);
+      font-weight: 400;
+      letter-spacing: 4.5px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-top: 4px;
+    }
+
+    #monogram::after {
+      content: '';
+      display: block;
+      width: 54px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold-light), transparent);
+      margin: 12px auto 0;
+    }
+
+    /* Envelope wrapper */
+    #envelope-wrapper {
+      position: relative;
+      width: min(85vw, 400px);
+      aspect-ratio: 3 / 2;
+      perspective: 3000px;
+      opacity: 0;
+      transform: scale(0.94);
+      animation: popIn 0.8s var(--ease-spring) 0.62s forwards;
+    }
+
+    #cuerpo {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      mix-blend-mode: multiply;
+      filter: drop-shadow(0 8px 28px rgba(100, 55, 35, 0.18));
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    #carta-wrap {
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      transform: translateX(-50%) translateY(10%);
+      width: 45.3%;
+      aspect-ratio: 172 / 242;
+      opacity: 0;
+      z-index: 4;
+      pointer-events: none;
+      filter: drop-shadow(0 14px 36px rgba(100, 50, 35, 0.24));
+    }
+
+    #carta {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      mix-blend-mode: multiply;
+    }
+
+    #solapa-wrap {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      transform-origin: 50% 14.71%;
+      transform: rotateX(0deg);
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    #envelope-wrapper.is-opening #solapa-wrap {
+      transition: transform 1.4s cubic-bezier(0.37, 0, 0.63, 1), opacity 0.35s ease-out 1.1s;
+      transform: rotateX(-90deg);
+      opacity: 0;
+    }
+
+    #solapa {
+      position: absolute;
+      top: -15.5px;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      mix-blend-mode: multiply;
+      pointer-events: none;
+    }
+
+    #sello {
+      position: absolute;
+      left: 49.84%;
+      top: 57.35%;
+      transform: translateX(-50%) translateY(-50%) scale(1);
+      width: 16.3%;
+      aspect-ratio: 1;
+      object-fit: contain;
+      filter: drop-shadow(0 3px 10px rgba(100, 55, 25, 0.28));
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    /* Hint */
+    #hint-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      pointer-events: none;
+      opacity: 0;
+      animation: fadeUp 0.7s var(--ease-out) 1.2s forwards;
+    }
+
+    #hint {
+      font-family: var(--ff-sans);
+      font-size: clamp(9px, 2.5vw, 11px);
+      font-weight: 400;
+      letter-spacing: 3.5px;
+      text-transform: uppercase;
+      color: var(--text-light);
+      animation: pulse 2.5s ease-in-out infinite;
+      white-space: nowrap;
+      transition: opacity 0.4s ease;
+    }
+
+    /* ── Halo pulsante (reemplaza chevron en la entrada) ── */
+    .pulse-halo {
+      position: relative;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pulse-halo::before,
+    .pulse-halo::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 1.5px solid var(--gold);
+      animation: haloRipple 2.2s ease-out infinite;
+    }
+
+    .pulse-halo::after {
+      animation-delay: 1.1s;
+      opacity: 0.5;
+    }
+
+    .pulse-halo .halo-core {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--gold);
+      opacity: 0.65;
+      position: relative;
+      z-index: 1;
+    }
+
+    @keyframes haloRipple {
+      0% {
+        transform: scale(0.5);
+        opacity: 0.7;
+      }
+
+      100% {
+        transform: scale(1.9);
+        opacity: 0;
+      }
+    }
+
+    /* ── Scroll indicator en el hero ── */
+    .hero-scroll {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      margin-top: 22px;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.6s ease 0.4s, transform 0.6s ease 0.4s;
+      pointer-events: none;
+    }
+
+    .hero-scroll.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .hero-scroll .scroll-label {
+      font-family: var(--ff-sans);
+      font-size: 8.5px;
+      font-weight: 500;
+      letter-spacing: 3.5px;
+      text-transform: uppercase;
+      color: var(--text-light);
+      animation: pulse 2.8s ease-in-out infinite;
+    }
+
+    .hero-scroll .scroll-arrow {
+      width: 14px;
+      height: 14px;
+      border-right: 1.5px solid var(--gold);
+      border-bottom: 1.5px solid var(--gold);
+      transform: rotate(45deg);
+      animation: heroChevBounce 2.2s ease-in-out infinite;
+      opacity: 0.55;
+    }
+
+    @keyframes heroChevBounce {
+
+      0%,
+      100% {
+        transform: rotate(45deg) translateY(0);
+        opacity: 0.45;
+      }
+
+      50% {
+        transform: rotate(45deg) translateY(6px);
+        opacity: 0.85;
+      }
+    }
+
+    /* ── Botones 3D elegantes ── */
+    .btn-outline,
+    .btn-wa {
+      box-shadow:
+        0 2px 0 rgba(180, 140, 50, 0.28),
+        0 4px 14px rgba(180, 130, 40, 0.14),
+        inset 0 1px 0 rgba(255, 255, 255, 0.55);
+      position: relative;
+      overflow: hidden;
+      transition: background 0.22s ease, transform 0.18s var(--ease-spring), box-shadow 0.18s ease;
+    }
+
+    .btn-outline::before,
+    .btn-wa::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.28) 0%, transparent 55%);
+      pointer-events: none;
+      border-radius: inherit;
+    }
+
+    .btn-outline:active,
+    .btn-wa:active {
+      transform: translateY(2px);
+      box-shadow:
+        0 0 0 rgba(180, 140, 50, 0.22),
+        0 2px 6px rgba(180, 130, 40, 0.10),
+        inset 0 1px 0 rgba(255, 255, 255, 0.35);
+      background: var(--gold-pale);
+    }
+
+    @media (hover: hover) {
+
+      .btn-outline:hover,
+      .btn-wa:hover {
+        transform: translateY(-2px);
+        box-shadow:
+          0 4px 0 rgba(180, 140, 50, 0.24),
+          0 8px 22px rgba(180, 130, 40, 0.18),
+          inset 0 1px 0 rgba(255, 255, 255, 0.6);
+        background: rgba(201, 168, 76, 0.06);
+      }
+    }
+
+    /* Shimmer sweep on transition */
+    #shimmer {
+      position: fixed;
+      inset: 0;
+      z-index: 190;
+      background: linear-gradient(100deg, transparent 0%, rgba(253, 240, 210, 0.55) 50%, transparent 100%);
+      transform: translateX(-110%);
+      pointer-events: none;
+    }
+
+    #shimmer.sweep {
+      animation: shimmerSweep 0.9s var(--ease-out) forwards;
+    }
+
+    /* Confetti */
+    #confetti-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0;
+      z-index: 300;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* ═══════════════════════════════════════
+       INVITATION PAGE
+    ═══════════════════════════════════════ */
+    #invitation {
+      display: none;
+      position: relative;
+      min-height: 100dvh;
+      opacity: 0;
+      transform: translateY(36px);
+      transition: opacity 0.8s ease 0.15s, transform 0.8s var(--ease-out) 0.15s;
+    }
+
+    #invitation.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Fixed botanical background layer */
+    #botanical-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+      will-change: transform;
+      transform: translateZ(0);
+    }
+
+    /* ── Section base ── */
+    .inv-section {
+      position: relative;
+      z-index: 1;
+      padding: 68px 28px;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    /* Scroll reveal: sections animate in */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.75s ease, transform 0.75s var(--ease-out);
+    }
+
+    .reveal.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-child {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.55s ease, transform 0.55s var(--ease-out);
+    }
+
+    .reveal-child.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Section label */
+    .s-label {
+      display: block;
+      font-family: var(--ff-sans);
+      font-size: 9.5px;
+      font-weight: 500;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--gold);
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    /* Section heading */
+    .s-title {
+      font-family: var(--ff-serif);
+      font-size: clamp(28px, 8vw, 40px);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--text-dark);
+      text-align: center;
+      line-height: 1.18;
+      margin-bottom: 32px;
+    }
+
+    /* ── Ornamental divider ── */
+    .ornament {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 8px 28px;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    .orn-line {
+      flex: 1;
+      max-width: 72px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold-light));
+    }
+
+    .orn-line.r {
+      background: linear-gradient(90deg, var(--gold-light), transparent);
+    }
+
+    .orn-dot {
+      width: 4px;
+      height: 4px;
+      background: var(--gold-light);
+      transform: rotate(45deg);
+      flex-shrink: 0;
+    }
+
+    .orn-dot.lg {
+      width: 6px;
+      height: 6px;
+      background: var(--gold);
+    }
+
+    /* ── Gold corner piece for photo frames ── */
+    .corner-piece {
+      position: absolute;
+      width: 28px;
+      height: 28px;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    .corner-piece.tl {
+      top: -15px;
+      left: -15px;
+    }
+
+    .corner-piece.tr {
+      top: -15px;
+      right: -15px;
+      transform: scaleX(-1);
+    }
+
+    .corner-piece.bl {
+      bottom: -15px;
+      left: -15px;
+      transform: scaleY(-1);
+    }
+
+    .corner-piece.br {
+      bottom: -15px;
+      right: -15px;
+      transform: scale(-1, -1);
+    }
+
+    /* ═══════════════════════════════════════
+       S1 — HERO
+    ═══════════════════════════════════════ */
+    #s-hero {
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 80px 32px 64px;
+    }
+
+    /* Photo frame */
+    .photo-frame {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 32px;
+    }
+
+    .photo-frame img {
+      display: block;
+      width: clamp(210px, 62vw, 290px);
+      aspect-ratio: 3 / 4;
+      object-fit: cover;
+      object-position: center top;
+    }
+
+    .photo-frame::before {
+      content: '';
+      position: absolute;
+      inset: -8px;
+      border: 1px solid var(--gold-border);
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .photo-frame::after {
+      content: '';
+      position: absolute;
+      inset: -15px;
+      border: 1px solid rgba(201, 168, 76, 0.14);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .hero-name {
+      font-family: var(--ff-serif);
+      font-size: clamp(34px, 10vw, 52px);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--text-dark);
+      letter-spacing: 1px;
+      line-height: 1.1;
+      margin-bottom: 10px;
+    }
+
+    .hero-sub {
+      font-family: var(--ff-sans);
+      font-size: clamp(10px, 2.8vw, 12px);
+      font-weight: 400;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    /* Botanical corner accents in hero */
+    .hero-corner {
+      position: absolute;
+      pointer-events: none;
+      opacity: 0.22;
+    }
+
+    .hero-corner.tl {
+      top: 24px;
+      left: 16px;
+    }
+
+    .hero-corner.tr {
+      top: 24px;
+      right: 16px;
+      transform: scaleX(-1);
+    }
+
+    .hero-corner.bl {
+      bottom: 24px;
+      left: 16px;
+      transform: scaleY(-1);
+    }
+
+    .hero-corner.br {
+      bottom: 24px;
+      right: 16px;
+      transform: scale(-1, -1);
+    }
+
+    /* ═══════════════════════════════════════
+       S2 — MESSAGE
+    ═══════════════════════════════════════ */
+    #s-message {
+      text-align: center;
+    }
+
+    .msg-salute {
+      font-family: var(--ff-serif);
+      font-size: clamp(22px, 6.5vw, 32px);
+      font-style: italic;
+      font-weight: 300;
+      color: var(--text-mid);
+      line-height: 1.35;
+      margin-bottom: 24px;
+    }
+
+    .msg-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin: 0 auto 24px;
+    }
+
+    .msg-body {
+      font-family: var(--ff-sans);
+      font-size: 14.5px;
+      font-weight: 300;
+      line-height: 1.95;
+      color: var(--text-mid);
+      max-width: 360px;
+      margin: 0 auto;
+    }
+
+    .msg-signature {
+      font-family: var(--ff-serif);
+      font-size: 24px;
+      font-style: italic;
+      color: var(--text-gold);
+      margin-top: 28px;
+    }
+
+    /* ═══════════════════════════════════════
+       S3 — DETAILS
+    ═══════════════════════════════════════ */
+    #s-details {
+      text-align: center;
+    }
+
+    .details-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .detail-card {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      border: 1px solid var(--gold-border);
+      padding: 20px 22px;
+      background: rgba(253, 248, 242, 0.72);
+      text-align: left;
+    }
+
+    .detail-icon {
+      width: 38px;
+      height: 38px;
+      flex-shrink: 0;
+      color: var(--gold);
+    }
+
+    .detail-label {
+      display: block;
+      font-family: var(--ff-sans);
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 3px;
+    }
+
+    .detail-value {
+      display: block;
+      font-family: var(--ff-serif);
+      font-size: 20px;
+      font-style: italic;
+      color: var(--text-dark);
+      line-height: 1.2;
+    }
+
+    .detail-sub {
+      display: block;
+      font-family: var(--ff-sans);
+      font-size: 11.5px;
+      font-weight: 300;
+      color: var(--text-light);
+      margin-top: 2px;
+    }
+
+    /* ═══════════════════════════════════════
+       S4 — MAP
+    ═══════════════════════════════════════ */
+    #s-map {
+      text-align: center;
+    }
+
+    .map-frame {
+      border: 1px solid var(--gold-border);
+      overflow: hidden;
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .map-frame iframe {
+      width: 100%;
+      height: 250px;
+      border: none;
+      display: block;
+      filter: sepia(18%) saturate(0.82) brightness(1.02);
+    }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border: 1px solid var(--gold-border);
+      background: transparent;
+      padding: 14px 30px;
+      font-family: var(--ff-sans);
+      font-size: 10.5px;
+      font-weight: 500;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--text-gold);
+      text-decoration: none;
+      transition: background 0.22s ease;
+      cursor: pointer;
+    }
+
+    .btn-outline:active {
+      background: var(--gold-pale);
+    }
+
+    .btn-outline svg {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+
+    /* ═══════════════════════════════════════
+       S5 — COUNTDOWN
+    ═══════════════════════════════════════ */
+    #s-countdown {
+      text-align: center;
+    }
+
+    /* Anillo decorativo sobre el contador */
+    .countdown-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid var(--gold-border);
+      background: rgba(253, 248, 242, 0.8);
+      padding: 8px 22px;
+      margin-bottom: 28px;
+      letter-spacing: 3.5px;
+      font-family: var(--ff-sans);
+      font-size: 9px;
+      font-weight: 500;
+      text-transform: uppercase;
+      color: var(--text-gold);
+      position: relative;
+    }
+
+    .countdown-badge::before,
+    .countdown-badge::after {
+      content: '';
+      width: 5px;
+      height: 5px;
+      background: var(--gold);
+      transform: rotate(45deg);
+      flex-shrink: 0;
+      opacity: 0.7;
+    }
+
+    .countdown-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .count-box {
+      border: 1px solid var(--gold-border);
+      background: rgba(253, 248, 242, 0.72);
+      padding: 24px 8px 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      position: relative;
+      overflow: hidden;
+      transition: box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+
+    /* línea separadora horizontal eliminada */
+    .count-box::after {
+      content: none;
+    }
+
+    /* brillo en mitad superior */
+    .count-box::before {
+      content: '';
+      position: absolute;
+      inset: 0 0 50% 0;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.22) 0%, transparent 100%);
+      pointer-events: none;
+    }
+
+    /* Ornamento de esquina en cada caja */
+    .count-box .box-corner {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      pointer-events: none;
+      opacity: 0.55;
+    }
+
+    .count-box .box-corner.tl {
+      top: 4px;
+      left: 4px;
+      border-top: 1px solid var(--gold);
+      border-left: 1px solid var(--gold);
+    }
+
+    .count-box .box-corner.tr {
+      top: 4px;
+      right: 4px;
+      border-top: 1px solid var(--gold);
+      border-right: 1px solid var(--gold);
+    }
+
+    .count-box .box-corner.bl {
+      bottom: 4px;
+      left: 4px;
+      border-bottom: 1px solid var(--gold);
+      border-left: 1px solid var(--gold);
+    }
+
+    .count-box .box-corner.br {
+      bottom: 4px;
+      right: 4px;
+      border-bottom: 1px solid var(--gold);
+      border-right: 1px solid var(--gold);
+    }
+
+    .count-num {
+      font-family: var(--ff-serif);
+      font-size: clamp(30px, 8vw, 48px);
+      font-weight: 300;
+      color: var(--text-dark);
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+      min-width: 2ch;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+      transition: transform 0.18s var(--ease-spring), color 0.18s ease;
+    }
+
+    /* clase que se aplica y quita en cada cambio de dígito */
+    .count-num.flip {
+      transform: scaleY(0.55) translateY(-5px);
+      color: var(--gold-light);
+    }
+
+    .count-label {
+      font-family: var(--ff-sans);
+      font-size: 7.5px;
+      font-weight: 500;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--gold);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* los segundos — borde dorado sutil, sin pulso */
+    #box-secs {
+      border-color: rgba(201, 168, 76, 0.48);
+    }
+
+    /* ═══════════════════════════════════════
+       S6 — DRESS CODE
+    ═══════════════════════════════════════ */
+    #s-dresscode {
+      text-align: center;
+    }
+
+    .dress-icon {
+      margin: 0 auto 28px;
+    }
+
+    .dresscode-main {
+      font-family: var(--ff-serif);
+      font-size: clamp(26px, 7vw, 36px);
+      font-style: italic;
+      font-weight: 300;
+      color: var(--text-dark);
+      margin-bottom: 32px;
+    }
+
+    .no-rules {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 36px;
+    }
+
+    .no-rule {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      border: 1px solid rgba(201, 168, 76, 0.22);
+      background: rgba(253, 248, 242, 0.65);
+      padding: 13px 18px;
+      text-align: left;
+    }
+
+    .no-rule svg {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+
+    .no-rule span {
+      font-family: var(--ff-sans);
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--text-mid);
+    }
+
+    .colors-block {
+      margin-top: 8px;
+    }
+
+    .colors-label {
+      font-family: var(--ff-sans);
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--text-light);
+      margin-bottom: 18px;
+    }
+
+    .swatches {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+    }
+
+    .swatch-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .swatch-circle {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      border: 1px solid var(--gold-border);
+    }
+
+    .swatch-name {
+      font-family: var(--ff-sans);
+      font-size: 9.5px;
+      font-weight: 400;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-light);
+    }
+
+    /* ═══════════════════════════════════════
+       S7 — GIFTS
+    ═══════════════════════════════════════ */
+    #s-gifts {
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .rain-stage {
+      position: relative;
+      height: 130px;
+      margin-bottom: 28px;
+    }
+
+    .rain-env {
+      position: absolute;
+      opacity: 0;
+    }
+
+    @keyframes envFall {
+      0% {
+        opacity: 0;
+        transform: translateY(-10px) rotate(var(--r, 0deg));
+      }
+
+      12% {
+        opacity: 0.7;
+      }
+
+      88% {
+        opacity: 0.7;
+      }
+
+      100% {
+        opacity: 0;
+        transform: translateY(140px) rotate(var(--r, 0deg));
+      }
+    }
+
+    .gifts-text {
+      font-family: var(--ff-sans);
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 1.9;
+      color: var(--text-mid);
+      max-width: 320px;
+      margin: 0 auto;
+    }
+
+    /* ═══════════════════════════════════════
+       S8 — RSVP
+    ═══════════════════════════════════════ */
+    #s-rsvp {
+      text-align: center;
+    }
+
+    .rsvp-note {
+      font-family: var(--ff-sans);
+      font-size: 13.5px;
+      font-weight: 300;
+      line-height: 1.75;
+      color: var(--text-mid);
+      margin-bottom: 32px;
+    }
+
+    .rsvp-deadline {
+      font-family: var(--ff-serif);
+      font-size: 20px;
+      font-style: italic;
+      color: var(--text-dark);
+    }
+
+    .btn-wa {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      border: 1px solid var(--gold-border);
+      background: transparent;
+      padding: 16px 36px;
+      font-family: var(--ff-sans);
+      font-size: 10.5px;
+      font-weight: 500;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--text-gold);
+      text-decoration: none;
+      transition: background 0.22s ease;
+    }
+
+    .btn-wa svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    .btn-wa:active {
+      background: var(--gold-pale);
+    }
+
+    /* ═══════════════════════════════════════
+       S9 — CLOSING
+    ═══════════════════════════════════════ */
+    #s-closing {
+      text-align: center;
+      padding-bottom: 80px;
+    }
+
+    .closing-quote {
+      font-family: var(--ff-serif);
+      font-size: clamp(17px, 5vw, 22px);
+      font-style: italic;
+      font-weight: 300;
+      color: var(--text-mid);
+      line-height: 1.72;
+      max-width: 340px;
+      margin: 0 auto 40px;
+    }
+
+    .closing-frame {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 30px;
+    }
+
+    .closing-frame img {
+      width: clamp(180px, 55vw, 260px);
+      aspect-ratio: 4 / 5;
+      object-fit: cover;
+      object-position: center top;
+    }
+
+    .closing-frame::before {
+      content: '';
+      position: absolute;
+      inset: -8px;
+      border: 1px solid var(--gold-border);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .closing-frame::after {
+      content: '';
+      position: absolute;
+      inset: -15px;
+      border: 1px solid rgba(201, 168, 76, 0.13);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .closing-name {
+      font-family: var(--ff-serif);
+      font-size: clamp(28px, 8vw, 38px);
+      font-style: italic;
+      font-weight: 300;
+      color: var(--text-dark);
+      margin-bottom: 8px;
+    }
+
+    .closing-date {
+      font-family: var(--ff-sans);
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    /* ═══════════════════════════════════════
+       KEYFRAMES
+    ═══════════════════════════════════════ */
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes popIn {
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 0.42;
+      }
+
+      50% {
+        opacity: 1;
+      }
+    }
+
+    @keyframes chevBounce {
+
+      0%,
+      100% {
+        transform: rotate(45deg) translateY(0);
+        opacity: 0.5;
+      }
+
+      50% {
+        transform: rotate(45deg) translateY(5px);
+        opacity: 0.9;
+      }
+    }
+
+    @keyframes shimmerSweep {
+      0% {
+        transform: translateX(-110%);
+      }
+
+      100% {
+        transform: translateX(110%);
+      }
+    }
+
+    /* ═══════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════ */
+    @media (max-width: 380px) {
+      .countdown-row {
+        gap: 6px;
+      }
+
+      .count-num {
+        font-size: 26px;
+      }
+
+      .inv-section {
+        padding: 56px 20px;
+      }
+    }
+
+    @media (min-width: 600px) {
+      .details-stack {
+        gap: 18px;
+      }
+    }
+
+    @media (max-height: 480px) and (orientation: landscape) {
+      #cover {
+        flex-direction: row;
+        gap: 36px;
+      }
+
+      #envelope-wrapper {
+        width: min(52vh, 320px);
+      }
+
+      #monogram .letra {
+        font-size: 54px;
+      }
+    }
+  </style>
+</head>
+
+<body class="marble">
+
+  <!-- ══════════════════════════════════════
+       COVER (envelope intro)
+  ══════════════════════════════════════ -->
+  <div id="cover" class="marble" role="button" aria-label="Toca para abrir la invitación" tabindex="0"
+    onclick="handleCoverTap()" onkeydown="if(event.key==='Enter'||event.key===' ')handleCoverTap()">
+
+    <div id="monogram" aria-hidden="true" style="margin-bottom:-10px">
+      <span class="letra" style="font-size:clamp(42px,11vw,72px);font-style:italic">Camila</span>
+      <span class="sub">XV Años</span>
+    </div>
+
+    <div id="envelope-wrapper" aria-hidden="true">
+      <img id="cuerpo" src="img/1.png" alt="Sobre">
+      <div id="carta-wrap">
+        <img id="carta" src="img/5.png" alt="Carta">
+      </div>
+      <div id="solapa-wrap">
+        <img id="solapa" src="img/3.png" alt="Solapa del sobre">
+      </div>
+      <img id="sello" src="img/4.png" alt="Sello de cera">
+    </div>
+
+    <div id="hint-wrap" aria-hidden="true">
+      <span id="hint">Toca para abrir</span>
+      <div class="pulse-halo"><span class="halo-core"></span></div>
+    </div>
+
+  </div>
+
+  <!-- Gold shimmer overlay -->
+  <div id="shimmer" aria-hidden="true"></div>
+
+  <!-- Confetti -->
+  <canvas id="confetti-canvas" aria-hidden="true"></canvas>
+
+  <!-- ══════════════════════════════════════
+       INVITATION
+  ══════════════════════════════════════ -->
+  <main id="invitation" class="marble" aria-label="Invitación XV Años Camila Barba">
+
+    <!-- Fixed botanical SVG background -->
+    <div id="botanical-bg" aria-hidden="true">
+
+      <!-- Top-left large branch -->
+      <svg style="position:absolute;top:0;left:0;width:200px;height:320px" viewBox="0 0 200 320" fill="none"
+        xmlns="http://www.w3.org/2000/svg">
+        <g opacity="0.14">
+          <path d="M-8 8 C14 38 8 80 20 125 C32 168 18 208 28 255 C34 280 12 298 4 315" stroke="#c9a84c"
+            stroke-width="1.15" />
+          <path d="M14 55 C32 42 58 37 80 46" stroke="#c9a84c" stroke-width="0.88" />
+          <path d="M80 46 C94 34 93 22 83 28 C73 34 72 46 80 46Z" stroke="#c9a84c" stroke-width="0.75" />
+          <path d="M19 103 C6 88 -14 84 -30 91" stroke="#c9a84c" stroke-width="0.88" />
+          <path d="M-30 91 C-42 79 -40 67 -30 73 C-20 78 -20 91 -30 91Z" stroke="#c9a84c" stroke-width="0.75" />
+          <path d="M23 150 C42 135 68 130 88 140" stroke="#c9a84c" stroke-width="0.88" />
+          <path d="M88 140 C102 128 101 115 91 121 C81 126 80 140 88 140Z" stroke="#c9a84c" stroke-width="0.75" />
+          <path d="M26 198 C12 183 -8 178 -22 186" stroke="#c9a84c" stroke-width="0.88" />
+          <path d="M-22 186 C-34 175 -32 162 -22 168 C-12 173 -12 186 -22 186Z" stroke="#c9a84c" stroke-width="0.75" />
+          <circle cx="88" cy="140" r="4.5" stroke="#c9a84c" stroke-width="0.72" />
+          <path d="M85 131 C88 127 91 131" stroke="#c9a84c" stroke-width="0.62" />
+          <path d="M80 136 C77 133 80 130" stroke="#c9a84c" stroke-width="0.62" />
+          <path d="M96 136 C99 133 96 130" stroke="#c9a84c" stroke-width="0.62" />
+          <circle cx="20" cy="125" r="1.8" fill="#c9a84c" />
+          <circle cx="26" cy="198" r="1.8" fill="#c9a84c" />
+        </g>
+      </svg>
+
+      <!-- Bottom-right branch (mirrored) -->
+      <svg style="position:absolute;bottom:0;right:0;width:200px;height:320px;transform:rotate(180deg)"
+        viewBox="0 0 200 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g opacity="0.12">
+          <path d="M-8 8 C14 38 8 80 20 125 C32 168 18 208 28 255 C34 280 12 298 4 315" stroke="#c9a84c"
+            stroke-width="1.15" />
+          <path d="M14 55 C32 42 58 37 80 46" stroke="#c9a84c" stroke-width="0.88" />
+          <path d="M80 46 C94 34 93 22 83 28 C73 34 72 46 80 46Z" stroke="#c9a84c" stroke-width="0.75" />
+          <path d="M19 103 C6 88 -14 84 -30 91" stroke="#c9a84c" stroke-width="0.88" />
+          <path d="M-30 91 C-42 79 -40 67 -30 73 C-20 78 -20 91 -30 91Z" stroke="#c9a84c" stroke-width="0.75" />
+          <path d="M23 150 C42 135 68 130 88 140" stroke="#c9a84c" stroke-width="0.88" />
+          <path d="M88 140 C102 128 101 115 91 121 C81 126 80 140 88 140Z" stroke="#c9a84c" stroke-width="0.75" />
+          <circle cx="88" cy="140" r="4.5" stroke="#c9a84c" stroke-width="0.72" />
+          <path d="M85 131 C88 127 91 131" stroke="#c9a84c" stroke-width="0.62" />
+          <circle cx="20" cy="125" r="1.8" fill="#c9a84c" />
+        </g>
+      </svg>
+
+      <!-- Mid-right sprig -->
+      <svg style="position:absolute;top:38%;right:-10px;width:110px;height:200px" viewBox="0 0 110 200" fill="none"
+        xmlns="http://www.w3.org/2000/svg">
+        <g opacity="0.10">
+          <path d="M100 5 C80 38 88 80 72 118 C60 148 72 170 62 194" stroke="#c9a84c" stroke-width="0.92" />
+          <path d="M84 48 C68 36 48 35 34 44" stroke="#c9a84c" stroke-width="0.78" />
+          <path d="M34 44 C21 33 22 21 32 27 C42 33 41 44 34 44Z" stroke="#c9a84c" stroke-width="0.65" />
+          <path d="M76 95 C60 83 40 81 26 90" stroke="#c9a84c" stroke-width="0.78" />
+          <circle cx="72" cy="118" r="3.5" stroke="#c9a84c" stroke-width="0.65" />
+          <path d="M69 110 C72 106 75 110" stroke="#c9a84c" stroke-width="0.58" />
+          <circle cx="84" cy="48" r="1.5" fill="#c9a84c" />
+        </g>
+      </svg>
+
+      <!-- Mid-left sprig -->
+      <svg style="position:absolute;top:55%;left:-12px;width:95px;height:180px" viewBox="0 0 95 180" fill="none"
+        xmlns="http://www.w3.org/2000/svg">
+        <g opacity="0.09">
+          <path d="M8 6 C28 36 22 75 34 112 C42 138 30 155 40 172" stroke="#c9a84c" stroke-width="0.92" />
+          <path d="M20 50 C40 37 64 35 82 44" stroke="#c9a84c" stroke-width="0.78" />
+          <path d="M82 44 C95 33 95 21 85 27 C75 32 74 44 82 44Z" stroke="#c9a84c" stroke-width="0.65" />
+          <path d="M28 96 C48 82 72 80 90 89" stroke="#c9a84c" stroke-width="0.78" />
+          <circle cx="34" cy="112" r="3.2" stroke="#c9a84c" stroke-width="0.65" />
+          <circle cx="20" cy="50" r="1.4" fill="#c9a84c" />
+        </g>
+      </svg>
+
+    </div><!-- /botanical-bg -->
+
+    <!-- ═══ S1: HERO ═══ -->
+    <section id="s-hero" class="inv-section reveal">
+
+      <!-- Corner botanical accents -->
+      <svg class="hero-corner tl" width="82" height="82" viewBox="0 0 82 82" fill="none">
+        <path d="M4 78 L4 18 Q4 4 18 4 L78 4" stroke="#c9a84c" stroke-width="1" />
+        <path d="M4 44 C18 34 24 18 20 6" stroke="#c9a84c" stroke-width="0.72" />
+        <ellipse cx="20" cy="5" rx="5" ry="3" transform="rotate(-28 20 5)" stroke="#c9a84c" stroke-width="0.65" />
+        <path d="M38 4 C34 18 26 24 16 20" stroke="#c9a84c" stroke-width="0.72" />
+        <ellipse cx="14" cy="19" rx="5" ry="3" transform="rotate(-58 14 19)" stroke="#c9a84c" stroke-width="0.65" />
+        <circle cx="4" cy="18" r="1.5" fill="#c9a84c" opacity="0.6" />
+      </svg>
+      <svg class="hero-corner tr" width="82" height="82" viewBox="0 0 82 82" fill="none">
+        <path d="M4 78 L4 18 Q4 4 18 4 L78 4" stroke="#c9a84c" stroke-width="1" />
+        <path d="M4 44 C18 34 24 18 20 6" stroke="#c9a84c" stroke-width="0.72" />
+        <ellipse cx="20" cy="5" rx="5" ry="3" transform="rotate(-28 20 5)" stroke="#c9a84c" stroke-width="0.65" />
+        <path d="M38 4 C34 18 26 24 16 20" stroke="#c9a84c" stroke-width="0.72" />
+        <ellipse cx="14" cy="19" rx="5" ry="3" transform="rotate(-58 14 19)" stroke="#c9a84c" stroke-width="0.65" />
+        <circle cx="4" cy="18" r="1.5" fill="#c9a84c" opacity="0.6" />
+      </svg>
+      <svg class="hero-corner bl" width="82" height="82" viewBox="0 0 82 82" fill="none">
+        <path d="M4 78 L4 18 Q4 4 18 4 L78 4" stroke="#c9a84c" stroke-width="1" />
+        <path d="M4 44 C18 34 24 18 20 6" stroke="#c9a84c" stroke-width="0.72" />
+        <ellipse cx="20" cy="5" rx="5" ry="3" transform="rotate(-28 20 5)" stroke="#c9a84c" stroke-width="0.65" />
+        <circle cx="4" cy="18" r="1.5" fill="#c9a84c" opacity="0.6" />
+      </svg>
+      <svg class="hero-corner br" width="82" height="82" viewBox="0 0 82 82" fill="none">
+        <path d="M4 78 L4 18 Q4 4 18 4 L78 4" stroke="#c9a84c" stroke-width="1" />
+        <path d="M4 44 C18 34 24 18 20 6" stroke="#c9a84c" stroke-width="0.72" />
+        <ellipse cx="20" cy="5" rx="5" ry="3" transform="rotate(-28 20 5)" stroke="#c9a84c" stroke-width="0.65" />
+        <circle cx="4" cy="18" r="1.5" fill="#c9a84c" opacity="0.6" />
+      </svg>
+
+      <!-- Photo -->
+      <div class="photo-frame reveal-child">
+        <img src="img/inicio.jpeg" alt="Camila Barba, Quinceañera">
+        <!-- Corner pieces -->
+        <svg class="corner-piece tl" viewBox="0 0 28 28" fill="none">
+          <path d="M26 2 L7 2 Q2 2 2 7 L2 26" stroke="#c9a84c" stroke-width="1.3" />
+          <circle cx="6.5" cy="6.5" r="1.8" fill="#c9a84c" />
+        </svg>
+        <svg class="corner-piece tr" viewBox="0 0 28 28" fill="none">
+          <path d="M26 2 L7 2 Q2 2 2 7 L2 26" stroke="#c9a84c" stroke-width="1.3" />
+          <circle cx="6.5" cy="6.5" r="1.8" fill="#c9a84c" />
+        </svg>
+        <svg class="corner-piece bl" viewBox="0 0 28 28" fill="none">
+          <path d="M26 2 L7 2 Q2 2 2 7 L2 26" stroke="#c9a84c" stroke-width="1.3" />
+          <circle cx="6.5" cy="6.5" r="1.8" fill="#c9a84c" />
+        </svg>
+        <svg class="corner-piece br" viewBox="0 0 28 28" fill="none">
+          <path d="M26 2 L7 2 Q2 2 2 7 L2 26" stroke="#c9a84c" stroke-width="1.3" />
+          <circle cx="6.5" cy="6.5" r="1.8" fill="#c9a84c" />
+        </svg>
+      </div>
+
+      <h1 class="hero-name reveal-child" style="transition-delay:80ms">Camila Barba</h1>
+      <p class="hero-sub  reveal-child" style="transition-delay:140ms">Mis XV Años</p>
+
+      <!-- Scroll indicator -->
+      <div class="hero-scroll reveal-child" style="transition-delay:220ms" aria-hidden="true">
+        <span class="scroll-label">Deslizar</span>
+        <div class="scroll-arrow"></div>
+      </div>
+    </section>
+
+    <!-- Divider -->
+    <div class="ornament" aria-hidden="true">
+      <div class="orn-line"></div>
+      <div class="orn-dot"></div>
+      <div class="orn-dot lg"></div>
+      <div class="orn-dot"></div>
+      <div class="orn-line r"></div>
+    </div>
+
+    <!-- ═══ S2: INVITATION MESSAGE ═══ -->
+    <section id="s-message" class="inv-section reveal">
+      <span class="s-label reveal-child">Invitación</span>
+
+      <p class="msg-salute reveal-child" style="transition-delay:60ms">
+        Con todo mi amor<br>te invito a celebrar
+      </p>
+
+      <div class="msg-divider reveal-child" style="transition-delay:100ms" aria-hidden="true">
+        <div class="orn-line" style="max-width:50px"></div>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M8 1 C8 1 11 6 15 8 C11 10 8 15 8 15 C8 15 5 10 1 8 C5 6 8 1 8 1Z" stroke="#c9a84c"
+            stroke-width="0.85" fill="rgba(201,168,76,0.08)" />
+        </svg>
+        <div class="orn-line r" style="max-width:50px"></div>
+      </div>
+
+      <p class="msg-body reveal-child" style="transition-delay:140ms">
+        Con el corazón lleno de alegría y gratitud, me llena de felicidad
+        invitarte a compartir uno de los momentos más especiales de mi vida.
+        El día que cumplo quince años es el inicio de una nueva etapa,
+        y quiero vivirla rodeada de las personas que más quiero.<br><br>
+        Tu presencia hará esta noche aún más memorable e inolvidable.
+      </p>
+
+      <p class="msg-signature reveal-child" style="transition-delay:180ms">— Camila</p>
+    </section>
+
+    <!-- Divider -->
+    <div class="ornament" aria-hidden="true">
+      <div class="orn-line"></div>
+      <div class="orn-dot"></div>
+      <div class="orn-dot lg"></div>
+      <div class="orn-dot"></div>
+      <div class="orn-line r"></div>
+    </div>
+
+    <!-- ═══ S3: EVENT DETAILS ═══ -->
+    <section id="s-details" class="inv-section reveal">
+      <span class="s-label">La celebración</span>
+      <h2 class="s-title">Detalles del Evento</h2>
+
+      <div class="details-stack">
+
+        <!-- Date -->
+        <div class="detail-card reveal-child">
+          <svg class="detail-icon" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3" y="7" width="32" height="28" rx="1" stroke="#c9a84c" stroke-width="1.1" />
+            <path d="M3 15 L35 15" stroke="#c9a84c" stroke-width="1" />
+            <path d="M12 3 L12 11" stroke="#c9a84c" stroke-width="1.1" stroke-linecap="round" />
+            <path d="M26 3 L26 11" stroke="#c9a84c" stroke-width="1.1" stroke-linecap="round" />
+            <rect x="8" y="21" width="6" height="5" rx="0.5" fill="#c9a84c" opacity="0.32" />
+            <rect x="16" y="21" width="6" height="5" rx="0.5" stroke="#c9a84c" stroke-width="0.75" />
+            <rect x="24" y="21" width="6" height="5" rx="0.5" stroke="#c9a84c" stroke-width="0.75" />
+            <rect x="8" y="28" width="6" height="5" rx="0.5" stroke="#c9a84c" stroke-width="0.75" />
+            <rect x="16" y="28" width="6" height="5" rx="0.5" stroke="#c9a84c" stroke-width="0.75" />
+          </svg>
+          <div>
+            <span class="detail-label">Fecha</span>
+            <span class="detail-value">20 de Junio, 2026</span>
+            <span class="detail-sub">Sábado</span>
+          </div>
+        </div>
+
+        <!-- Time -->
+        <div class="detail-card reveal-child" style="transition-delay:60ms">
+          <svg class="detail-icon" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="19" cy="19" r="15" stroke="#c9a84c" stroke-width="1.1" />
+            <path d="M19 8 L19 19 L26 24" stroke="#c9a84c" stroke-width="1.25" stroke-linecap="round"
+              stroke-linejoin="round" />
+            <circle cx="19" cy="19" r="1.6" fill="#c9a84c" />
+          </svg>
+          <div>
+            <span class="detail-label">Horario</span>
+            <span class="detail-value">9:00 PM — 2:00 AM</span>
+            <span class="detail-sub">Recepción a las 9:00 PM</span>
+          </div>
+        </div>
+
+        <!-- Venue -->
+        <div class="detail-card reveal-child" style="transition-delay:120ms">
+          <svg class="detail-icon" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19 4 C12 4 6 10 6 17 C6 26 19 34 19 34 C19 34 32 26 32 17 C32 10 26 4 19 4Z" stroke="#c9a84c"
+              stroke-width="1.1" />
+            <circle cx="19" cy="17" r="4.5" stroke="#c9a84c" stroke-width="1" />
+          </svg>
+          <div>
+            <span class="detail-label">Lugar</span>
+            <span class="detail-value">Quinta San Gabriel</span>
+            <span class="detail-sub">Chihuahua, Chih.</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Divider -->
+    <div class="ornament" aria-hidden="true">
+      <div class="orn-line"></div>
+      <div class="orn-dot"></div>
+      <div class="orn-dot lg"></div>
+      <div class="orn-dot"></div>
+      <div class="orn-line r"></div>
+    </div>
+
+    <!-- ═══ S4: MAP ═══ -->
+    <section id="s-map" class="inv-section reveal">
+      <span class="s-label">Como llegar</span>
+      <h2 class="s-title">Ubicación</h2>
+
+      <div class="map-frame reveal-child">
+        <iframe src="https://maps.google.com/maps?q=Quinta+San+Gabriel+Chihuahua+Mexico&output=embed&z=15"
+          loading="lazy" title="Ubicación de Quinta San Gabriel, Chihuahua" allowfullscreen
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+
+      <div style="text-align:center" class="reveal-child" style="transition-delay:80ms">
+        <a href="https://maps.app.goo.gl/yzPj8jZpYCTkSvto8" target="_blank" rel="noopener noreferrer"
+          class="btn-outline">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C8.13 2 5 5.13 5 9C5 14.25 12 22 12 22C12 22 19 14.25 19 9C19 5.13 15.87 2 12 2Z"
+              stroke="#c9a84c" stroke-width="1.3" />
+            <circle cx="12" cy="9" r="3" stroke="#c9a84c" stroke-width="1.15" />
+          </svg>
+          Abrir en Google Maps
+        </a>
+      </div>
+    </section>
+
+    <!-- Divider -->
+    <div class="ornament" aria-hidden="true">
+      <div class="orn-line"></div>
+      <div class="orn-dot"></div>
+      <div class="orn-dot lg"></div>
+      <div class="orn-dot"></div>
+      <div class="orn-line r"></div>
+    </div>
+
+    <!-- ═══ S5: COUNTDOWN ═══ -->
+    <section id="s-countdown" class="inv-section reveal">
+      <span class="s-label">La espera...</span>
+      <h2 class="s-title">Faltan</h2>
+
+      <div class="reveal-child" style="text-align:center">
+        <span class="countdown-badge">20 · Junio · 2026</span>
+      </div>
+
+      <div class="countdown-row">
+        <div class="count-box reveal-child" style="transition-delay:40ms">
+          <span class="box-corner tl"></span>
+          <span class="box-corner tr"></span>
+          <span class="box-corner bl"></span>
+          <span class="box-corner br"></span>
+          <span class="count-num" id="cd-days">--</span>
+          <span class="count-label">Días</span>
+        </div>
+        <div class="count-box reveal-child" style="transition-delay:90ms">
+          <span class="box-corner tl"></span>
+          <span class="box-corner tr"></span>
+          <span class="box-corner bl"></span>
+          <span class="box-corner br"></span>
+          <span class="count-num" id="cd-hours">--</span>
+          <span class="count-label">Horas</span>
+        </div>
+        <div class="count-box reveal-child" style="transition-delay:140ms">
+          <span class="box-corner tl"></span>
+          <span class="box-corner tr"></span>
+          <span class="box-corner bl"></span>
+          <span class="box-corner br"></span>
+          <span class="count-num" id="cd-mins">--</span>
+          <span class="count-label">Minutos</span>
+        </div>
+        <div class="count-box reveal-child" style="transition-delay:190ms" id="box-secs">
+          <span class="box-corner tl"></span>
+          <span class="box-corner tr"></span>
+          <span class="box-corner bl"></span>
+          <span class="box-corner br"></span>
+          <span class="count-num" id="cd-secs">--</span>
+          <span class="count-label">Segundos</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Divider -->
+    <div class="ornament" aria-hidden="true">
+      <div class="orn-line"></div>
+      <div class="orn-dot"></div>
+      <div class="orn-dot lg"></div>
+      <div class="orn-dot"></div>
+      <div class="orn-line r"></div>
+    </div>
+
+    <!-- ═══ S6: DRESS CODE ═══ -->
+    <section id="s-dresscode" class="inv-section reveal">
+      <span class="s-label">Presentación</span>
+      <h2 class="s-title">Código de Vestimenta</h2>
+
+      <!-- Dress code image -->
+      <div class="dress-icon reveal-child" style="margin-bottom:32px">
+        <img src="img/dresscode.png" alt="Código de vestimenta — Etiqueta Formal"
+          style="width:clamp(140px,48vw,220px);margin:0 auto;object-fit:contain;filter:sepia(18%) saturate(0.9) brightness(1.02)" />
+      </div>
+
+      <p class="dresscode-main reveal-child" style="transition-delay:60ms">Etiqueta Formal</p>
+
+      <div class="no-rules">
+        <div class="no-rule reveal-child" style="transition-delay:100ms">
+          <svg viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="11" cy="11" r="9.5" stroke="#c9a84c" stroke-width="1.05" />
+            <path d="M4 4 L18 18" stroke="#c9a84c" stroke-width="1.05" />
+          </svg>
+          <span>No gorras ni sombreros casuales</span>
+        </div>
+        <div class="no-rule reveal-child" style="transition-delay:140ms">
+          <svg viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="11" cy="11" r="9.5" stroke="#c9a84c" stroke-width="1.05" />
+            <path d="M4 4 L18 18" stroke="#c9a84c" stroke-width="1.05" />
+          </svg>
+          <span>No tenis ni calzado deportivo</span>
+        </div>
+        <div class="no-rule reveal-child" style="transition-delay:180ms">
+          <svg viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="11" cy="11" r="9.5" stroke="#c9a84c" stroke-width="1.05" />
+            <path d="M4 4 L18 18" stroke="#c9a84c" stroke-width="1.05" />
+          </svg>
+          <span>No mezclilla ni denim</span>
+        </div>
+      </div>
+
+      <div class="colors-block reveal-child" style="transition-delay:220ms">
+        <p class="colors-label">Colores reservados para la quinceañera</p>
+        <div class="swatches">
+          <div class="swatch-item">
+            <div class="swatch-circle" style="background:linear-gradient(135deg,#f4c4d2,#e8a0b8)"></div>
+            <span class="swatch-name">Rosa</span>
+          </div>
+          <div class="swatch-item">
+            <div class="swatch-circle" style="background:linear-gradient(135deg,#e8c97a,#c9a84c)"></div>
+            <span class="swatch-name">Dorado</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Divider -->
+    <div class="ornament" aria-hidden="true">
+      <div class="orn-line"></div>
+      <div class="orn-dot"></div>
+      <div class="orn-dot lg"></div>
+      <div class="orn-dot"></div>
+      <div class="orn-line r"></div>
+    </div>
+
+    <!-- ═══ S7: GIFTS ═══ -->
+    <section id="s-gifts" class="inv-section reveal">
+      <span class="s-label">Regalos</span>
+      <h2 class="s-title">Mesa de Regalos</h2>
+
+      <!-- Animated envelope rain (JS fills this) -->
+      <div class="rain-stage" id="rain-stage" aria-hidden="true"></div>
+
+      <p class="gifts-text reveal-child" style="transition-delay:60ms">
+        Si deseas hacerme un regalo, puedes contribuir en la lluvia de sobres
+        o cualquier detalle que salga de tu corazón será
+        recibido con muchísimo amor y gratitud.
+      </p>
+    </section>
+
+    <!-- Divider -->
+    <div class="ornament" aria-hidden="true">
+      <div class="orn-line"></div>
+      <div class="orn-dot"></div>
+      <div class="orn-dot lg"></div>
+      <div class="orn-dot"></div>
+      <div class="orn-line r"></div>
+    </div>
+
+    <!-- ═══ S8: RSVP ═══ -->
+    <section id="s-rsvp" class="inv-section reveal">
+      <span class="s-label">Confirmación</span>
+      <h2 class="s-title">Confirmar Asistencia</h2>
+
+      <p class="rsvp-note reveal-child">
+        Tu presencia es muy importante para mí.
+        Por favor confírmame tu asistencia
+        para que pueda reservar tu lugar en esta noche tan especial.
+      </p>
+
+      <div class="reveal-child" style="transition-delay:80ms;text-align:center">
+        <a href="https://wa.me/526144957408?text=Hola%2C%20confirmo%20mi%20asistencia%20a%20los%20XV%20A%C3%B1os%20de%20Camila%20Barba%20el%2020%20de%20junio%20de%202026."
+          target="_blank" rel="noopener noreferrer" class="btn-wa">
+          <!-- WhatsApp SVG (outline style) -->
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M12 2C6.48 2 2 6.48 2 12C2 13.74 2.46 15.36 3.25 16.77L2 22L7.38 20.78C8.75 21.55 10.32 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2Z"
+              stroke="#c9a84c" stroke-width="1.2" />
+            <path
+              d="M16.5 14.5C16.2 14.35 14.75 13.64 14.48 13.54C14.21 13.44 14.01 13.39 13.81 13.69C13.61 13.99 13.05 14.65 12.87 14.85C12.7 15.05 12.52 15.07 12.22 14.92C11.92 14.78 10.95 14.45 9.8 13.42C8.9 12.62 8.3 11.62 8.12 11.32C7.95 11.02 8.1 10.86 8.25 10.72C8.39 10.58 8.55 10.37 8.69 10.2C8.84 10.03 8.89 9.9 8.99 9.7C9.09 9.5 9.04 9.36 8.97 9.22C8.9 9.07 8.3 7.6 8.05 7.01C7.81 6.43 7.57 6.51 7.38 6.5C7.21 6.49 7.01 6.49 6.81 6.49C6.61 6.49 6.29 6.56 6.02 6.86C5.74 7.16 4.96 7.89 4.96 9.38C4.96 10.87 6.04 12.31 6.2 12.51C6.35 12.71 8.29 15.77 11.32 17.08C12.04 17.39 12.6 17.58 13.04 17.72C13.76 17.95 14.42 17.92 14.94 17.84C15.52 17.75 16.69 17.12 16.94 16.43C17.18 15.73 17.18 15.13 17.11 15.02C17.04 14.9 16.8 14.82 16.5 14.5Z"
+              stroke="#c9a84c" stroke-width="0.65" />
+          </svg>
+          Confirmar por WhatsApp
+        </a>
+      </div>
+    </section>
+
+    <!-- Divider -->
+    <div class="ornament" aria-hidden="true">
+      <div class="orn-line"></div>
+      <div class="orn-dot"></div>
+      <div class="orn-dot lg"></div>
+      <div class="orn-dot"></div>
+      <div class="orn-line r"></div>
+    </div>
+
+    <!-- ═══ S9: CLOSING ═══ -->
+    <section id="s-closing" class="inv-section reveal">
+
+      <p class="closing-quote reveal-child">
+        Gracias por acompañarme en uno de los momentos más importantes y especiales de mi vida.
+        Compartir esta noche con las personas que quiero hace que todo sea aún más significativo
+        e inolvidable para mí. Espero que disfruten esta celebración tanto como yo soñé vivirla
+        y que juntos podamos crear recuerdos hermosos que siempre llevaré en mi corazón.
+      </p>
+
+      <div class="ornament reveal-child" style="transition-delay:60ms;padding:4px 0 28px" aria-hidden="true">
+        <div class="orn-line"></div>
+        <!-- Corona XV -->
+        <svg width="26" height="20" viewBox="0 0 26 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- base de la corona -->
+          <path d="M2 16 L4 7 L9 12 L13 3 L17 12 L22 7 L24 16 Z" stroke="#c9a84c" stroke-width="1"
+            stroke-linejoin="round" fill="rgba(201,168,76,0.09)" />
+          <!-- banda inferior -->
+          <rect x="2" y="16" width="22" height="3" rx="0.5" stroke="#c9a84c" stroke-width="0.9"
+            fill="rgba(201,168,76,0.12)" />
+          <!-- perlas / gemas -->
+          <circle cx="13" cy="3.5" r="1.3" fill="#c9a84c" opacity="0.75" />
+          <circle cx="4.2" cy="7.2" r="1" fill="#c9a84c" opacity="0.55" />
+          <circle cx="21.8" cy="7.2" r="1" fill="#c9a84c" opacity="0.55" />
+          <!-- brillo banda -->
+          <line x1="2" y1="17.5" x2="24" y2="17.5" stroke="rgba(255,255,255,0.35)" stroke-width="0.7" />
+        </svg>
+        <div class="orn-line r"></div>
+      </div>
+
+      <div class="closing-frame reveal-child" style="transition-delay:100ms">
+        <img src="img/cierre.jpeg" alt="Camila Barba" loading="lazy">
+        <svg class="corner-piece tl" viewBox="0 0 28 28" fill="none">
+          <path d="M26 2 L7 2 Q2 2 2 7 L2 26" stroke="#c9a84c" stroke-width="1.3" />
+          <circle cx="6.5" cy="6.5" r="1.8" fill="#c9a84c" />
+        </svg>
+        <svg class="corner-piece tr" viewBox="0 0 28 28" fill="none">
+          <path d="M26 2 L7 2 Q2 2 2 7 L2 26" stroke="#c9a84c" stroke-width="1.3" />
+          <circle cx="6.5" cy="6.5" r="1.8" fill="#c9a84c" />
+        </svg>
+        <svg class="corner-piece bl" viewBox="0 0 28 28" fill="none">
+          <path d="M26 2 L7 2 Q2 2 2 7 L2 26" stroke="#c9a84c" stroke-width="1.3" />
+          <circle cx="6.5" cy="6.5" r="1.8" fill="#c9a84c" />
+        </svg>
+        <svg class="corner-piece br" viewBox="0 0 28 28" fill="none">
+          <path d="M26 2 L7 2 Q2 2 2 7 L2 26" stroke="#c9a84c" stroke-width="1.3" />
+          <circle cx="6.5" cy="6.5" r="1.8" fill="#c9a84c" />
+        </svg>
+      </div>
+
+      <p class="closing-name reveal-child" style="transition-delay:160ms">Camila Barba</p>
+      <p class="closing-date reveal-child" style="transition-delay:200ms">20 · 06 · 2026</p>
+    </section>
+
+  </main><!-- /invitation -->
+
+  <script>
+    /* ═════════════════════════════════════════
+       ENVELOPE ANIMATION
+    ═════════════════════════════════════════ */
+    let envelopeOpened = false;
+
+    function handleCoverTap() {
+      if (envelopeOpened) return;
+      envelopeOpened = true;
+
+      const cover = document.getElementById('cover');
+      const hintWrap = document.getElementById('hint-wrap');
+      const hint = document.getElementById('hint');
+      const sello = document.getElementById('sello');
+      const envWrap = document.getElementById('envelope-wrapper');
+      const cartaWrap = document.getElementById('carta-wrap');
+      const confetti = document.getElementById('confetti-canvas');
+
+      cover.style.cursor = 'default';
+
+      // 1. Hide hint
+      hintWrap.style.transition = 'opacity 0.35s ease';
+      hintWrap.style.opacity = '0';
+
+      // 2. Sello: bounce → disappear
+      sello.style.transition = 'transform 0.36s cubic-bezier(0.34,1.56,0.64,1)';
+      sello.style.transform = 'translateX(-50%) translateY(-50%) scale(1.18)';
+      setTimeout(() => {
+        sello.style.transition = 'transform 0.55s cubic-bezier(0.55,0,1,1), opacity 0.5s ease';
+        sello.style.transform = 'translateX(-50%) translateY(-50%) scale(0) rotate(12deg)';
+        sello.style.opacity = '0';
+      }, 380);
+
+      // 3. Open flap
+      setTimeout(() => {
+        envWrap.classList.add('is-opening');
+      }, 820);
+
+      // 4. Letter rises + confetti
+      setTimeout(() => {
+        cartaWrap.style.transition = 'transform 1.4s cubic-bezier(0.34,1.36,0.64,1), opacity 0.6s ease';
+        cartaWrap.style.opacity = '1';
+        cartaWrap.style.transform = 'translateX(-50%) translateY(-62%)';
+        launchConfetti(confetti);
+      }, 1820);
+
+      // 5. Auto-reveal invitation after confetti
+      setTimeout(() => {
+        const cover = document.getElementById('cover');
+        const shimmer = document.getElementById('shimmer');
+        const invitation = document.getElementById('invitation');
+
+        shimmer.classList.add('sweep');
+        cover.classList.add('leaving');
+
+        invitation.style.display = 'block';
+        setTimeout(() => {
+          window.scrollTo({ top: 0, behavior: 'instant' });
+          invitation.classList.add('visible');
+          initScrollReveal();
+          startCountdown();
+          buildEnvelopeRain();
+        }, 100);
+
+        setTimeout(() => { cover.style.display = 'none'; }, 900);
+      }, 3600);
+    }
+
+    /* ═════════════════════════════════════════
+       SCROLL REVEAL — IntersectionObserver
+    ═════════════════════════════════════════ */
+    function initScrollReveal() {
+      const revealEls = document.querySelectorAll('.reveal');
+      const childEls = document.querySelectorAll('.reveal-child');
+
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('in-view');
+
+          // Animate children inside this section
+          entry.target.querySelectorAll('.reveal-child').forEach(child => {
+            child.classList.add('in-view');
+          });
+
+          obs.unobserve(entry.target);
+        });
+      }, { threshold: 0.07, rootMargin: '0px 0px -30px 0px' });
+
+      revealEls.forEach(el => obs.observe(el));
+
+      // Immediately reveal first section
+      const hero = document.querySelector('#s-hero');
+      if (hero) {
+        hero.classList.add('in-view');
+        hero.querySelectorAll('.reveal-child').forEach(c => c.classList.add('in-view'));
+      }
+    }
+
+    /* ═════════════════════════════════════════
+       COUNTDOWN
+    ═════════════════════════════════════════ */
+    function startCountdown() {
+      const target = new Date('2026-06-20T21:00:00-06:00').getTime();
+      const daysEl = document.getElementById('cd-days');
+      const hoursEl = document.getElementById('cd-hours');
+      const minsEl = document.getElementById('cd-mins');
+      const secsEl = document.getElementById('cd-secs');
+
+      function pad(n) { return String(n).padStart(2, '0'); }
+
+      function flipUpdate(el, newVal) {
+        if (el.textContent === newVal) return;
+        el.classList.add('flip');
+        setTimeout(() => {
+          el.textContent = newVal;
+          el.classList.remove('flip');
+        }, 90);
+      }
+
+      function tick() {
+        const diff = target - Date.now();
+        if (diff <= 0) {
+          [daysEl, hoursEl, minsEl, secsEl].forEach(el => { el.textContent = '00'; });
+          return;
+        }
+        flipUpdate(daysEl, pad(Math.floor(diff / 86400000)));
+        flipUpdate(hoursEl, pad(Math.floor((diff % 86400000) / 3600000)));
+        flipUpdate(minsEl, pad(Math.floor((diff % 3600000) / 60000)));
+        flipUpdate(secsEl, pad(Math.floor((diff % 60000) / 1000)));
+      }
+
+      tick();
+      setInterval(tick, 1000);
+    }
+
+    /* ═════════════════════════════════════════
+       ENVELOPE RAIN (Gifts section)
+    ═════════════════════════════════════════ */
+    function buildEnvelopeRain() {
+      const stage = document.getElementById('rain-stage');
+      if (!stage) return;
+
+      const svgTpl = `<svg viewBox="0 0 34 26" fill="none" xmlns="http://www.w3.org/2000/svg" width="34" height="26">
+        <rect x="1" y="1" width="32" height="24" rx="1.5" stroke="#c9a84c" stroke-width="0.9"/>
+        <path d="M1 3 L17 15 L33 3" stroke="#c9a84c" stroke-width="0.9"/>
+        <path d="M1 23 L12 14" stroke="#c9a84c" stroke-width="0.65" opacity="0.5"/>
+        <path d="M33 23 L22 14" stroke="#c9a84c" stroke-width="0.65" opacity="0.5"/>
+      </svg>`;
+
+      const configs = [
+        { left: '6%', delay: '0s', dur: '3.3s', rot: '-7deg' },
+        { left: '19%', delay: '0.65s', dur: '3.8s', rot: '5deg' },
+        { left: '33%', delay: '1.15s', dur: '3.1s', rot: '-4deg' },
+        { left: '48%', delay: '0.35s', dur: '3.6s', rot: '9deg' },
+        { left: '62%', delay: '1.55s', dur: '2.9s', rot: '-5deg' },
+        { left: '76%', delay: '0.9s', dur: '3.5s', rot: '7deg' },
+        { left: '25%', delay: '2.1s', dur: '3.2s', rot: '-11deg' },
+        { left: '70%', delay: '2.45s', dur: '3.4s', rot: '6deg' },
+      ];
+
+      configs.forEach(c => {
+        const div = document.createElement('div');
+        div.className = 'rain-env';
+        div.style.left = c.left;
+        div.style.setProperty('--r', c.rot);
+        div.style.animation = `envFall ${c.dur} ease-in ${c.delay} infinite`;
+        div.innerHTML = svgTpl;
+        stage.appendChild(div);
+      });
+    }
+
+    /* ═════════════════════════════════════════
+       CONFETTI
+    ═════════════════════════════════════════ */
+    function launchConfetti(canvas) {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      canvas.style.opacity = '1';
+
+      const ctx = canvas.getContext('2d');
+      const colors = ['#f4c4d2', '#c9a84c', '#fdf8f2', '#e8a0b8', '#d4af6a', '#fce4ec', '#e8c97a', '#f0c4ce'];
+
+      const particles = Array.from({ length: 105 }, () => ({
+        x: canvas.width / 2 + (Math.random() - 0.5) * 200,
+        y: canvas.height * 0.42,
+        vx: (Math.random() - 0.5) * 7.5,
+        vy: -(Math.random() * 9 + 3.5),
+        size: Math.random() * 8 + 2.2,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        alpha: 1,
+        rot: Math.random() * 360,
+        rotV: (Math.random() - 0.5) * 9,
+        circ: Math.random() > 0.5,
+      }));
+
+      let frame = 0;
+      (function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+          p.x += p.vx; p.y += p.vy;
+          p.vy += 0.10; p.rot += p.rotV;
+          p.alpha -= 0.0068;
+          if (p.alpha <= 0) return;
+          ctx.save();
+          ctx.globalAlpha = Math.max(0, p.alpha);
+          ctx.fillStyle = p.color;
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.rot * Math.PI / 180);
+          if (p.circ) {
+            ctx.beginPath();
+            ctx.arc(0, 0, p.size / 2, 0, Math.PI * 2);
+            ctx.fill();
+          } else {
+            ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.55);
+          }
+          ctx.restore();
+        });
+        frame++;
+        if (frame < 210) requestAnimationFrame(draw);
+        else { canvas.style.transition = 'opacity 0.5s ease'; canvas.style.opacity = '0'; }
+      })();
+    }
+  </script>
+
+</body>
+
+</html>
